@@ -20,14 +20,16 @@ def get_states():
 
 @app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
 def get_state(state_id):
-    """ If the state_id is not linked to any State object, raise a 404 error """
+    """ If the state_id is not linked to any State object,
+    raise a 404 error """
     state = storage.get(State, state_id)
     if state is None:
         abort(404)
     return jsonify(state.to_dict())
 
 
-@app_views.route('/states/<state_id>', methods=['DELETE'], strict_slashes=False)
+@app_views.route('/states/<state_id>', methods=['DELETE'],
+                 strict_slashes=False)
 def del_state(state_id):
     """ Delete a state """
     state = storage.get(State, state_id)
