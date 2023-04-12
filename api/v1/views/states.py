@@ -8,7 +8,7 @@ from models import storage
 from models import base_model
 
 
-@app_views('/states', methods=['GET'], strict_slashes=False)
+@app_views.route('/states', methods=['GET'], strict_slashes=False)
 def get_states():
     """ Retrieve the list of all State """
     states = storage.all(State).values()
@@ -18,7 +18,7 @@ def get_states():
     return jsonify(states_list)
 
 
-@app_views('/states/<state_id>', methods=['GET'])
+@app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
 def get_state(state_id):
     """ If the state_id is not linked to any State object, raise a 404 error """
     state = storage.get(State, state_id)
