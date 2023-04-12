@@ -3,10 +3,16 @@
 
 from api.v1.views import app_views
 from models import storage
-from models.amenity import Amenity
 from flask import Flask, jsonify, abort, request, make_response
-from models.city import City
 from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+from models.user import User
+import sys
+sys.path.append("/home/Ethan1709/holbertonschool-AirBnB_clone_v3")
+
 
 
 @app_views.route('/amenities', methods=['GET'], strict_slashes=False)
