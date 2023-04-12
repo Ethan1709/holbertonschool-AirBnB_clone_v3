@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ all states """
 
-from flask import jsonify, abort
+from flask import jsonify, abort, request
 from api.v1.views import app_views
 from models.state import State
 from models import storage
@@ -38,3 +38,18 @@ def del_state(state_id):
     state.delete()
     storage.save()
     return jsonify({}), 200
+
+
+@app_views.route('/states', methods=['POST'], strict_slashes=False)
+def create_state():
+    """ create a state """
+    inf = request.get_json()
+    if inf is None:
+        abort(404, 'Not a JSON')
+    if 'name' not in inf:
+        abort(404, 'Missing name')
+
+    state = State(**inf)
+    storage.new(state)
+    storage.save()
+    return jsonify({}), 201
