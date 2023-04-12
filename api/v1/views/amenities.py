@@ -4,15 +4,19 @@
 from api.v1.views import app_views
 from models import storage
 from models.amenity import Amenity
-from flask import jsonify, abort, request
+from flask import Flask, jsonify, abort, request, make_response
+from models.city import City
+from models.state import State
 
 
-@app_views.route('/amenities', methods=['GET'],
-                 strict_slashes=False)
+@app_views.route('/amenities', methods=['GET'], strict_slashes=False)
 def get_amenities():
     """ Retrieve the list of all Amenities """
     amenities = storage.all(Amenity).values()
-    return jsonify([amenity.to_dict() for amenity in amenities])
+    amenities_list = []
+    for amenity in amenities:
+        amenities_list.append(amenity.to_dict())
+    return jsonify(amenities_list)
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['GET'],
@@ -32,9 +36,9 @@ def del_amenity(amenity_id):
     amenity = storage.get(Amenity, amenity_id)
     if amenity is None:
         abort(404)
-    storage.delete(amenity)
+    amenity.delete()
     storage.save()
-    return jsonify({}), 200
+    return make_response(jsonify({}), 200)
 
 
 @app_views.route('/amenities', methods=['POST'],
@@ -44,8 +48,9 @@ def create_amenity():
     req_data = request.get_json()
     if req_data is None:
         abort(400, 'Not a JSON')
-    if 'name' not in req_data:
+    if req_data.get('name') is None:
         abort(400, 'Missing name')
+
     amenity = Amenity(**req_data)
     storage.new(amenity)
     storage.save()
@@ -64,5 +69,5 @@ def update_amenity(amenity_id):
     for key, value in req_data.items():
         if key not in ['id', 'created_at', 'updated_at']:
             setattr(amenity, key, value)
-    storage.save()
+    amenity.save()
     return jsonify(amenity.to_dict()), 200
