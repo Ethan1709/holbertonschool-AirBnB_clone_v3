@@ -54,7 +54,7 @@ def create_city(state_id):
         abort(400, 'Not a JSON')
     if inf.get('name') is None:
         abort(400, 'Missing name')
-
+    inf['state_id'] = state_id
     city = City(**inf)
     city.save()
     return jsonify(city.to_dict()), 201
