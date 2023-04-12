@@ -9,7 +9,8 @@ from models import base_model
 from models.state import State
 
 
-@app_views.route('/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
+@app_views.route('/states/<state_id>/cities', methods=['GET'],
+                 strict_slashes=False)
 def get_city(state_id):
     """ Retrieve the list of all State """
     state = storage.get(State, state_id)
@@ -43,7 +44,8 @@ def del_city(city_id):
     return jsonify({}), 200
 
 
-@app_views.route('/states/<state_id>/cities', methods=['POST'], strict_slashes=False)
+@app_views.route('/states/<state_id>/cities', methods=['POST'],
+                 strict_slashes=False)
 def create_city(state_id):
     """ create a city """
     state = storage.get(State, state_id)
@@ -62,7 +64,9 @@ def create_city(state_id):
 
 @app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
 def update_city(city_id):
-    city = storage.get(City, city_id)
+    city = storage.get(City, city_id)state = storage.get(State, state_id)
+    if state is None:
+        abort(404)
     if city is None:
         abort(404)
     inf = request.get_json()
