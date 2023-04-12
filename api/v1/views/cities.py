@@ -12,7 +12,7 @@ from models.state import State
 @app_views.route('/states/<state_id>/cities', methods=['GET'],
                  strict_slashes=False)
 def get_city(state_id):
-    """ Retrieve the list of all State """
+    """ Retrieve the list of all Cities """
     state = storage.get(State, state_id)
     if state is None:
         abort(404)
@@ -24,7 +24,7 @@ def get_city(state_id):
 
 @app_views.route('/cities/<city_id>', methods=['GET'], strict_slashes=False)
 def get_citys(city_id):
-    """ If the state_id is not linked to any State object,
+    """ If the state_id is not linked to any City object,
     raise a 404 error """
     city = storage.get(City, city_id)
     if city is None:
@@ -63,11 +63,9 @@ def create_city(state_id):
 
 
 @app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
-def update_city(city_id, state_id):
+def update_city(city_id):
+    """ update a city """
     city = storage.get(City, city_id)
-    state = storage.get(State, state_id)
-    if state is None:
-        abort(404)
     if city is None:
         abort(404)
     inf = request.get_json()
