@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" all states """
+""" all cities """
 
 from flask import jsonify, abort, request
 from api.v1.views import app_views
@@ -8,7 +8,7 @@ from models import storage
 from models import base_model
 
 
-@app_views.route('/cities', methods=['GET'], strict_slashes=False)
+@app_views.route('/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
 def get_states():
     """ Retrieve the list of all State """
     cities = storage.all(City).values()
@@ -40,7 +40,7 @@ def del_city(city_id):
     return jsonify({}), 200
 
 
-@app_views.route('/cities', methods=['POST'], strict_slashes=False)
+@app_views.route('/states/<state_id>/cities', methods=['POST'], strict_slashes=False)
 def create_city():
     """ create a city """
     inf = request.get_json()
