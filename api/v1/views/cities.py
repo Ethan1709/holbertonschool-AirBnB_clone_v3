@@ -44,8 +44,11 @@ def del_city(city_id):
 
 
 @app_views.route('/states/<state_id>/cities', methods=['POST'], strict_slashes=False)
-def create_city():
+def create_city(state_id):
     """ create a city """
+    state = storage.get(State, state_id)
+    if state is None:
+        abort(404)
     inf = request.get_json()
     if inf is None:
         abort(400, 'Not a JSON')
