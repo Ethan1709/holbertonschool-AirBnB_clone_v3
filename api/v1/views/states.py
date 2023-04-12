@@ -50,6 +50,5 @@ def create_state():
         abort(400, 'Missing name')
 
     state = State(**inf)
-    storage.new(state)
-    storage.save()
-    return jsonify({}), 201
+    state.save()
+    return jsonify(state.to_dict()), 201
