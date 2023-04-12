@@ -46,7 +46,7 @@ def create_state():
     inf = request.get_json()
     if inf is None:
         abort(400, 'Not a JSON')
-    if 'name' not in inf:
+    if inf.get('name') is None:
         abort(400, 'Missing name')
 
     state = State(**inf)
