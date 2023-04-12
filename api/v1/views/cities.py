@@ -10,7 +10,7 @@ from models.state import State
 
 
 @app_views.route('/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
-def get_states(state_id):
+def get_city(state_id):
     """ Retrieve the list of all State """
     state = storage.get(State, state_id)
     if state is None:
@@ -22,7 +22,7 @@ def get_states(state_id):
 
 
 @app_views.route('/cities/<city_id>', methods=['GET'], strict_slashes=False)
-def get_state(city_id):
+def get_citys(city_id):
     """ If the state_id is not linked to any State object,
     raise a 404 error """
     city = storage.get(City, city_id)
