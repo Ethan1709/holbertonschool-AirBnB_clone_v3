@@ -7,73 +7,86 @@ from flask import Flask, jsonify, abort, request, make_response
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
-from models.place import Place
-from models.review import Review
-from models.user import User
-import sys
-sys.path.append("/home/Ethan1709/holbertonschool-AirBnB_clone_v3")
-
 
 
 @app_views.route('/amenities', methods=['GET'], strict_slashes=False)
 def get_amenities():
-    """ Retrieve the list of all Amenities """
-    amenities = storage.all(Amenity).values()
-    amenities_list = []
-    for amenity in amenities:
-        amenities_list.append(amenity.to_dict())
-    return jsonify(amenities_list)
+    """
+    Return all amenities
+    """
+    all_amenities = storage.all(Amenity).values()
+    amenities = []
+    for amenity in all_amenities:
+        amenities.append(amenity.to_dict())
+    return jsonify(amenities)
 
 
-@app_views.route('/amenities/<amenity_id>', methods=['GET'],
+@app_views.route('/amenities/<amenity_id>/', methods=['GET'],
                  strict_slashes=False)
 def get_amenity(amenity_id):
-    """ Retrieves a Amenity object """
+    """ Retrun amenity special par rapporr id"""
     amenity = storage.get(Amenity, amenity_id)
-    if amenity is None:
+    if not amenity:
         abort(404)
+
     return jsonify(amenity.to_dict())
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['DELETE'],
                  strict_slashes=False)
-def del_amenity(amenity_id):
-    """ Delete a amenity object """
+def delete_amenity(amenity_id):
+    """
+    Suprimer un amenity avec un id
+    """
+
     amenity = storage.get(Amenity, amenity_id)
-    if amenity is None:
+
+    if not amenity:
         abort(404)
-    amenity.delete()
+
+    storage.delete(amenity)
     storage.save()
+
     return make_response(jsonify({}), 200)
 
 
-@app_views.route('/amenities', methods=['POST'],
-                 strict_slashes=False)
-def create_amenity():
-    """ create a new amenity object """
-    req_data = request.get_json()
-    if req_data is None:
-        abort(400, 'Not a JSON')
-    if req_data.get('name') is None:
-        abort(400, 'Missing name')
+@app_views.route('/amenities', methods=['POST'], strict_slashes=False)
+def post_amenity():
+    """
+    Creates an amenity
+    """
+    if not request.get_json():
+        abort(400, description="Not a JSON")
 
-    amenity = Amenity(**req_data)
-    storage.new(amenity)
-    storage.save()
-    return jsonify(amenity.to_dict()), 201
+    if 'name' not in request.get_json():
+        abort(400, description="Missing name")
+
+    data = request.get_json()
+    # ** permet de faire passer args
+    instance = Amenity(**data)
+    instance.save()
+    return make_response(jsonify(instance.to_dict()), 201)
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['PUT'],
                  strict_slashes=False)
-def update_amenity(amenity_id):
+def put_amenity(amenity_id):
+    """
+    Updates an amenity
+    """
+    if not request.get_json():
+        abort(400, description="Not a JSON")
+
+    non = ['id', 'created_at', 'updated_at']
+
     amenity = storage.get(Amenity, amenity_id)
-    if amenity is None:
+
+    if not amenity:
         abort(404)
-    req_data = request.get_json()
-    if req_data is None:
-        abort(400, 'Not a JSON')
-    for key, value in req_data.items():
-        if key not in ['id', 'created_at', 'updated_at']:
+
+    data = request.get_json()
+    for key, value in data.items():
+        if key not in non:
             setattr(amenity, key, value)
-    amenity.save()
-    return jsonify(amenity.to_dict()), 200
+    storage.save()
+    return make_response(jsonify(amenity.to_dict()), 200)
