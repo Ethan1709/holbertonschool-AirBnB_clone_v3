@@ -6,11 +6,12 @@ from api.v1.views import app_views
 from models.state import State
 from models import storage
 from models import base_model
+import models
 
 
-@app_views('/states', methods=['GET'])
+@app_views('/states', methods=['GET'], strict_slashes=False)
 def get_states():
-    states = storage.all(State).values()
+    states = models.storage.all(State).values()
     states_list = []
     for state in states:
         states_list.append(state.to_dict())
