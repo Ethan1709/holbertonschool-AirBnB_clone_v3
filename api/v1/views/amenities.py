@@ -14,7 +14,7 @@ from models.amenity import Amenity
                  strict_slashes=False)
 def list_amenitie():
     """ Retrieve the list of all Amenities """
-    amenities = storage.all(Amenity).values
+    amenities = storage.all(Amenity).values()
     amenities_list = []
     for amenity in amenities_list:
         amenities_list.append(amenity.to_dict())
