@@ -40,7 +40,7 @@ def del_city(city_id):
     return jsonify({}), 200
 
 
-@app_views.route('/citis', methods=['POST'], strict_slashes=False)
+@app_views.route('/cities', methods=['POST'], strict_slashes=False)
 def create_city():
     """ create a city """
     inf = request.get_json()
