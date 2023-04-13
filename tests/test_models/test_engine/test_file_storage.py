@@ -153,3 +153,36 @@ class TestFileStorage(unittest.TestCase):
 
         states_nb = len(storage.all(State).values())
         self.assertEqual(storage.count(State), states_nb)
+
+
+class TestBaseModel(unittest.TestCase):
+
+    def test_datetime_attributes(self):
+        inst1 = BaseModel()
+        inst2 = BaseModel()
+        self.assertNotEqual(inst1.created_at, inst2.created_at)
+
+
+class TestDBStorageDocs(unittest.TestCase):
+
+    def test_dbs_func_docstrings(self):
+        # TODO: Implement test to check docstrings in DBStorage methods
+        pass
+
+
+class TestFileStorageDocs(unittest.TestCase):
+
+    def setUp(self):
+        self.fs = FileStorage()
+
+    def test_fs_func_docstrings(self):
+        # TODO: Implement test to check docstrings in FileStorage methods
+        pass
+
+    def test_count(self):
+        self.fs.reload()
+        self.assertEqual(self.fs.count(), len(self.fs.all()))
+
+
+if __name__ == '__main__':
+    unittest.main()
