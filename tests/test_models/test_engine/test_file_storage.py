@@ -7,6 +7,7 @@ from datetime import datetime
 import inspect
 import models
 from models.engine import file_storage
+from models.engine.file_storage import FileStorage
 from models.amenity import Amenity
 from models.base_model import BaseModel
 from models.city import City
@@ -21,6 +22,17 @@ import unittest
 FileStorage = file_storage.FileStorage
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
+
+
+class TestBaseModel(unittest.TestCase):
+    """Test the BaseModel class"""
+
+    def test_datetime_attributes(self):
+        """Test that two BaseModel instances have different datetime objects"""
+        bm1 = BaseModel()
+        bm2 = BaseModel()
+        self.assertNotEqual(bm1.created_at, bm2.created_at)
+        self.assertNotEqual(bm1.updated_at, bm2.updated_at)
 
 
 class TestFileStorageDocs(unittest.TestCase):
@@ -62,10 +74,11 @@ test_file_storage.py'])
     def test_fs_func_docstrings(self):
         """Test for the presence of docstrings in FileStorage methods"""
         for func in self.fs_f:
-            self.assertIsNot(func[1].__doc__, None,
-                             "{:s} method needs a docstring".format(func[0]))
-            self.assertTrue(len(func[1].__doc__) >= 1,
-                            "{:s} method needs a docstring".format(func[0]))
+            with self.subTest(func=func[0]):
+                self.assertIsNotNone(func[1].__doc__,
+                                     f"{func[0]} method needs a docstring")
+                self.assertTrue(len(func[1].__doc__) >= 1,
+                                f"{func[0]} method needs a docstring")
 
 
 class TestFileStorage(unittest.TestCase):
