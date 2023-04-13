@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" all USERS """
+""" all users """
 
 from flask import jsonify, abort, request
 from api.v1.views import app_views
@@ -9,39 +9,39 @@ from models import base_model
 
 
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
-def get_states():
-    """ Retrieve the list of all State """
-    states = storage.all(State).values()
-    states_list = []
-    for state in states:
-        states_list.append(state.to_dict())
-    return jsonify(states_list)
+def get_users():
+    """ Retrieve the list of all Users """
+    users = storage.all(User).values()
+    users_list = []
+    for user in users:
+        users_list.append(user.to_dict())
+    return jsonify(users_list)
 
 
 @app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
-def get_state(state_id):
+def get_user(user_id):
     """ If the state_id is not linked to any State object,
     raise a 404 error """
-    state = storage.get(State, state_id)
-    if state is None:
+    user = storage.get(User, user_id)
+    if user is None:
         abort(404)
-    return jsonify(state.to_dict())
+    return jsonify(user.to_dict())
 
 
 @app_views.route('/states/<state_id>', methods=['DELETE'],
                  strict_slashes=False)
-def del_state(state_id):
+def del_user(user_id):
     """ Delete a state """
-    state = storage.get(State, state_id)
-    if state is None:
+    user = storage.get(User, user_id)
+    if user is None:
         abort(404)
-    state.delete()
+    user.delete()
     storage.save()
     return jsonify({}), 200
 
 
 @app_views.route('/states', methods=['POST'], strict_slashes=False)
-def create_state():
+def create_user():
     """ create a state """
     inf = request.get_json()
     if inf is None:
@@ -49,21 +49,21 @@ def create_state():
     if inf.get('name') is None:
         abort(400, 'Missing name')
 
-    state = State(**inf)
-    state.save()
-    return jsonify(state.to_dict()), 201
+    user = User(**inf)
+    user.save()
+    return jsonify(user.to_dict()), 201
 
 
 @app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
-def update_state(state_id):
-    state = storage.get(State, state_id)
-    if state is None:
+def update_user(user_id):
+    user = storage.get(User, user_id)
+    if user is None:
         abort(404)
     inf = request.get_json()
     if inf is None:
         abort(400, 'Not a JSON')
     for key, value in inf.items():
         if key not in ['id', 'created_at', 'updated_at']:
-            setattr(state, key, value)
-    state.save()
-    return jsonify(state.to_dict()), 200
+            setattr(user, key, value)
+    user.save()
+    return jsonify(user.to_dict()), 200
