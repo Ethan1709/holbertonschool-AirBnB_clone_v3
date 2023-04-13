@@ -8,7 +8,7 @@ from models import storage
 from models import base_model
 
 
-@app_views.route('/states', methods=['GET'], strict_slashes=False)
+@app_views.route('/users', methods=['GET'], strict_slashes=False)
 def get_users():
     """ Retrieve the list of all Users """
     users = storage.all(User).values()
@@ -18,7 +18,7 @@ def get_users():
     return jsonify(users_list)
 
 
-@app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
+@app_views.route('/users/<user_id>', methods=['GET'], strict_slashes=False)
 def get_user(user_id):
     """ If the state_id is not linked to any State object,
     raise a 404 error """
@@ -28,7 +28,7 @@ def get_user(user_id):
     return jsonify(user.to_dict())
 
 
-@app_views.route('/states/<state_id>', methods=['DELETE'],
+@app_views.route('/users/<user_id>', methods=['DELETE'],
                  strict_slashes=False)
 def del_user(user_id):
     """ Delete a state """
@@ -40,7 +40,7 @@ def del_user(user_id):
     return jsonify({}), 200
 
 
-@app_views.route('/states', methods=['POST'], strict_slashes=False)
+@app_views.route('/users', methods=['POST'], strict_slashes=False)
 def create_user():
     """ create a state """
     inf = request.get_json()
@@ -54,7 +54,7 @@ def create_user():
     return jsonify(user.to_dict()), 201
 
 
-@app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
+@app_views.route('/users/<user_id>', methods=['PUT'], strict_slashes=False)
 def update_user(user_id):
     user = storage.get(User, user_id)
     if user is None:
