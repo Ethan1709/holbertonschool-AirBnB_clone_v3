@@ -18,7 +18,7 @@ def get_places(city_id):
     if city is None:
         abort(404)
     places_list = []
-    for i in city.place:
+    for i in city:
         places_list.append(i.to_dict())
     return jsonify(places_list)
 
