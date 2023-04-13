@@ -63,7 +63,6 @@ def create_place(city_id, user_id):
     if inf.get('name') is None:
         abort(400, 'Missing name')
     inf['city_id'] = city_id
-    inf['user_id'] = user_id
     place = Place(**inf)
     place.save()
     return jsonify(place.to_dict()), 201
