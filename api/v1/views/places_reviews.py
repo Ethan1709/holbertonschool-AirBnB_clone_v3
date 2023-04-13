@@ -7,7 +7,6 @@ from models import storage
 from models.place import Place
 from models.user import User
 from models.review import Review
-from models.city import City
 
 
 @app_views.route('/places/<place_id>/reviews', methods=['GET'],
@@ -18,7 +17,7 @@ def get_reviews(place_id):
     if place is None:
         abort(404)
     reviews_list = []
-    for i in place.places_reviews:
+    for i in place.reviews:
         reviews_list.append(i.to_dict())
     return jsonify(reviews_list)
 
