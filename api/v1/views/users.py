@@ -46,8 +46,10 @@ def create_user():
     inf = request.get_json()
     if inf is None:
         abort(400, 'Not a JSON')
-    if inf.get('name') is None:
-        abort(400, 'Missing name')
+    if inf.get('email') is None:
+        abort(400, 'Missing email')
+    if inf.get('password') is None:
+        abort(400, 'Missing password')
 
     user = User(**inf)
     user.save()
