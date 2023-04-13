@@ -3,10 +3,8 @@
 
 from flask import jsonify, abort, request
 from api.v1.views import app_views
-from models.city import City
 from models import storage
 from models import base_model
-from models.state import State
 from models.amenity import Amenity
 
 
