@@ -56,7 +56,7 @@ class FileStorage:
                 jo = json.load(f)
             for key in jo:
                 self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
-        except:
+        except FileNotFoundError:
             pass
 
     def delete(self, obj=None):
@@ -71,12 +71,12 @@ class FileStorage:
         self.reload()
 
     def get(self, cls, id):
-       m = models.storage.all(cls)
-       for value in m.values():
-           if value.id == id:
-               return value
-       return None
-           
+        m = models.storage.all(cls)
+        for value in m.values():
+            if value.id == id:
+                return value
+        return None
+
     def count(self, cls=None):
         m = models.storage.all(cls)
         return len(m)
