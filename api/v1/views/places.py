@@ -61,7 +61,7 @@ def create_place(city_id, user_id):
     if user is None:
         abort(404)
     if inf.get('name') is None:
-        abort(400, 'Missing name')  
+        abort(400, 'Missing name')
     inf['city_id'] = city_id
     place = Place(**inf)
     place.save()
