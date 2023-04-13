@@ -79,7 +79,8 @@ def update_review(review_id):
     if inf is None:
         abort(400, 'Not a JSON')
     for key, value in inf.items():
-        if key not in ['id', 'user_id', 'place_id', 'created_at', 'updated_at']:
+        if key not in ['id',
+                       'user_id', 'place_id', 'created_at', 'updated_at']:
             setattr(review, key, value)
     review.save()
     return jsonify(review.to_dict()), 200
